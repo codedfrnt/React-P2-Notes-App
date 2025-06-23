@@ -11,46 +11,33 @@ function NotesAppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
 
-  const handleCreateNote = () => {
+  const openCreateModal = () => {
     setEditingNote(null);
     setIsModalOpen(true);
   };
 
-  const handleEditNote = (note) => {
+  const openEditModal = (note) => {
     setEditingNote(note);
     setIsModalOpen(true);
   };
 
-  const handleSaveNote = (noteData) => {
+  const saveNote = (noteData) => {
     const now = new Date().toISOString();
-    
     if (editingNote) {
-      const updatedNote = {
-        ...editingNote,
-        ...noteData,
-        updatedAt: now,
-      };
-      dispatch({ type: 'UPDATE_NOTE', payload: updatedNote });
+      dispatch({ type: 'UPDATE_NOTE', payload: { ...editingNote, ...noteData, updatedAt: now } });
     } else {
-      const newNote = {
-        id: crypto.randomUUID(),
-        ...noteData,
-        createdAt: now,
-        updatedAt: now,
-      };
-      dispatch({ type: 'ADD_NOTE', payload: newNote });
+      dispatch({ type: 'ADD_NOTE', payload: { id: crypto.randomUUID(), ...noteData, createdAt: now, updatedAt: now } });
     }
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setIsModalOpen(false);
     setEditingNote(null);
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       <Sidebar />
-      
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
@@ -59,26 +46,23 @@ function NotesAppContent() {
               <p className="text-gray-600">Organize your thoughts and ideas</p>
             </div>
             <button
-              onClick={handleCreateNote}
-              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={openCreateModal}
+              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               <Plus size={20} />
               <span>New Note</span>
             </button>
           </div>
         </div>
-
         <SearchAndFilter />
-        
         <div className="flex-1 overflow-y-auto">
-          <NotesGrid onEditNote={handleEditNote} />
+          <NotesGrid onEditNote={openEditModal} />
         </div>
       </div>
-
       <NoteModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSave={handleSaveNote}
+        onClose={closeModal}
+        onSave={saveNote}
         note={editingNote}
       />
     </div>

@@ -15,8 +15,8 @@ function Sidebar() {
   return (
     <div className="w-64 bg-gray-50 border-r border-gray-200 h-screen p-4">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Smart Notes</h1>
-        <p className="text-gray-600 text-sm">Notes for smart people</p>
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Notes App</h1>
+        <p className="text-gray-600 text-sm">Manage your notes efficiently</p>
       </div>
       
       <nav className="space-y-2">
